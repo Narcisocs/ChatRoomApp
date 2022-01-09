@@ -1,6 +1,6 @@
 ﻿namespace DevChat.Business.Models
 {
-    public class Participant : Entity
+    public class Participant
     {
         /* EF Relations */
         public IEnumerable<ChatRoom> ChatRoom { get; set; }
