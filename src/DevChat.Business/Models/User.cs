@@ -8,5 +8,6 @@
 
         /* EF Relations */
         public IEnumerable<ChatMessage> chatMessages { get; set; }
+        public ICollection<ChatRoom> ChatRooms { get; set; }
     }
 }

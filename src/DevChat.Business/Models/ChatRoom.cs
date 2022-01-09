@@ -5,6 +5,7 @@
         public string Name { get; set; }
 
         /* EF Relations */
-        public IEnumerable<ChatMessage> chatMessages { get; set; }
+        public IEnumerable<ChatMessage> ChatMessages { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }
