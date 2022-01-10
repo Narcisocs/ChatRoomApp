@@ -9,6 +9,15 @@ namespace DevChat.Data.Repository
     {
         public ChatRoomRepository(MyDbContext context) : base(context) { }
 
+        public async Task CreateRoom(string chatRoomName)
+        {
+            var chatRoom = new ChatRoom() { Name = chatRoomName };
+
+            Db.ChatRooms.Add(chatRoom);
+            
+            await SaveChanges();
+        }
+
         public async Task<IEnumerable<ChatMessage>> ListMessages(ChatRoom chatRoom)
         {
             int messageLimit = 50;

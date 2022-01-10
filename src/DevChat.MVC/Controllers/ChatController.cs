@@ -6,27 +6,49 @@ namespace DevChat.MVC.Controllers
 {
     public class ChatController : Controller
     {
-        private readonly IChatRoomRepository _chatRoomRepository;
+        private readonly IChatRoomService _chatRoomService;
 
-        public ChatController(IChatRoomRepository chatRoomRepository)
+        public ChatController(IChatRoomService chatRoomService)
         {
-            _chatRoomRepository = chatRoomRepository;
+            _chatRoomService = chatRoomService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var chatRooms = await _chatRoomRepository.GetAll();
-            var model = new ChatModel() { ChatRooms = chatRooms };
+            var model = await GetAllChatRooms();
 
             return View(model);
         }
 
-        public async Task<IActionResult> Chat()
+        public IActionResult CreateRoom()
         {
-            var chatRooms = await _chatRoomRepository.GetAll();
+            return View();
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> CreateRoom(string chatRoomName)
+        {
+            await _chatRoomService.CreateRoom(chatRoomName);
+
+            TempData["message"] = "A room was created";
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> EnterRoom(long roomId)
+        {
+            var chatRoom = await _chatRoomService.GetById(roomId);
+
+            return View("chat", new ChatModel() { ChatRooms = new List<Business.Models.ChatRoom>() { chatRoom } });
+        }
+
+        private async Task<ChatModel> GetAllChatRooms()
+        {
+            var chatRooms = await _chatRoomService.GetAll();
             var model = new ChatModel() { ChatRooms = chatRooms };
 
-            return View(model);
+            return model;
         }
     }
 }

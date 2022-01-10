@@ -1,4 +1,5 @@
 using DevChat.Business.Interfaces;
+using DevChat.Business.Services;
 using DevChat.Data.Context;
 using DevChat.Data.Repository;
 using DevChat.MVC.Models;
@@ -27,6 +28,8 @@ builder.Services.AddScoped<MyDbContext>();
 builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,7 +47,11 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Chat}/{action=Index}/{id?}");
+    pattern: "{controller=Chat}/{action=Index}");
+
+app.MapControllerRoute(
+    name: "createRoom",
+    pattern: "{controller=Chat}/{action=CreateRoom}");
 
 
 app.UseEndpoints(endpoints =>

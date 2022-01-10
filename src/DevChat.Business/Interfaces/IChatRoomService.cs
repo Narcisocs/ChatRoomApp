@@ -2,7 +2,7 @@
 
 namespace DevChat.Business.Interfaces
 {
-    public interface IChatRoomRepository : IRepository<ChatRoom>
+    public interface IChatRoomService : IBaseService<ChatRoom>, IDisposable
     {
         Task CreateRoom(string chatRoomName);
         Task Add(ChatRoom chatRoom, User user);

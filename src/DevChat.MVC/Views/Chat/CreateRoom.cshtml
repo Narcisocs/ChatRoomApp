@@ -12,31 +12,6 @@
     <link rel="stylesheet" href="~/SampleChat.styles.css" asp-append-version="true" />
 </head>
 <body>
-
-    @if(TempData["message"] != null)
-    {
-        <div id="infoValidationSummary" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title"><b>Message</b></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-horizontal">
-                            @TempData["message"]
-                        </div>
-                    </div>
-                    <div class="modal-footer center-block">
-                        <button type="button" class="btn btn-primary btn-sm text-center" data-dismiss="modal">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -53,31 +28,17 @@
             <div class="text-center">
                 <h1 class="display-4">Welcome to the Chat Room App</h1>
             </div>
-            @{
-                if(Model.ChatRooms.Count > 0)
+            <div class="text-center">
+                @using (Html.BeginForm("CreateRoom", "Chat", FormMethod.Post))
                 {
-                    <ul>
-                    @foreach(var chatRoom in Model.ChatRooms)
-                    {
-                        <li>@chatRoom.Name - @Html.ActionLink("Enter in Room", "EnterRoom", "Chat", new { roomId = @chatRoom.Id })</li>                            
-                    }
-                    </ul>
-
-                    <div class="text-center">
-                        <br />
-                        <br />
-                        <h2>Would you like to create @Html.ActionLink("one", "CreateRoom", "Chat") ?</h2>
+                    @Html.AntiForgeryToken();
+                    <div class="form-group">
+                        <label for="chatRoomName">Room Name</label>
+                        <input class="form-control" id="chatRoomName" name="chatRoomName" aria-describedby="emailHelp" placeholder="Enter Room Name">
                     </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 }
-                else
-                {
-                    <div class="text-center">
-                        <br />
-                        <br />
-                        <h2>No rooms created so far. <p>Would you like to create @Html.ActionLink("one", "CreateRoom", "Chat") ?</p></h2>
-                    </div>
-                }
-            }
+            </div>
         </main>
     </div>
 
