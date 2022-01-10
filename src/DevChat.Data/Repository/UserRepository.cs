@@ -30,8 +30,7 @@ namespace DevChat.Data.Repository
         public async Task<IEnumerable<ChatMessage>> ListMessagesOf(ChatRoom chatRoom, User user)
         {
             return await Db.Users.AsNoTracking()
-                .Include(c => c.ChatRooms)
-                .Where(c => c.Id == chatRoom.Id)
+                .Where(u => u.Participants.Any(p => p.ChatRoomId == chatRoom.Id))
                 .SelectMany(c => c.chatMessages)
                 .ToListAsync();
         }
@@ -39,21 +38,20 @@ namespace DevChat.Data.Repository
         public async Task<IEnumerable<User>> ListParticipantsOf(ChatRoom chatRoom)
         {
             return await Db.Users.AsNoTracking()
-                .Include(c => c.ChatRooms)
-                .Where(c => c.Id == chatRoom.Id)
+                .Where(u => u.Participants.Any(p => p.ChatRoomId == chatRoom.Id))
                 .ToListAsync();
         }
 
         public async Task SendMessageTo(ChatRoom chatRoom, string message)
         {
             var messages = await Db.Users.AsNoTracking()
-                .Include(u => u.ChatRooms)
-                .Where(c => c.Id == chatRoom.Id)
-                .SelectMany(u => u.chatMessages)
+                .Where(u => u.Participants.Any(p => p.ChatRoomId == chatRoom.Id))
+                .SelectMany(c => c.chatMessages)
                 .ToListAsync();
 
             messages.ToList().Add(new ChatMessage() { Content = message });
-            Db.SaveChanges();
+            
+            await SaveChanges();
         }
     }
 }

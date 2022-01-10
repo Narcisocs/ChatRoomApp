@@ -22,7 +22,7 @@ namespace DevChat.Data.Repository
             return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
-        public virtual async Task<TEntity> GetById(Guid id)
+        public virtual async Task<TEntity> GetById(long id)
         {
             return await DbSet.FindAsync(id);
         }
@@ -44,7 +44,7 @@ namespace DevChat.Data.Repository
             await SaveChanges();
         }
 
-        public virtual async Task Delete(Guid id)
+        public virtual async Task Delete(long id)
         {
             DbSet.Remove(new TEntity { Id = id });
             await SaveChanges();

@@ -6,6 +6,6 @@
 
         /* EF Relations */
         public IEnumerable<ChatMessage> ChatMessages { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<Participant> Participants { get; set; }
     }
 }

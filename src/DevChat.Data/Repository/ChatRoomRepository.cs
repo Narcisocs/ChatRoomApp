@@ -11,11 +11,14 @@ namespace DevChat.Data.Repository
 
         public async Task<IEnumerable<ChatMessage>> ListMessages(ChatRoom chatRoom)
         {
+            int messageLimit = 50;
+
             return await Db.ChatRooms.AsNoTracking()
                 .Where(c => c.Id == chatRoom.Id)
                 .Include(c => c.ChatMessages)
                 .SelectMany(c => c.ChatMessages)
-                .OrderByDescending(m => m.CreatedDate)
+                .OrderBy(m => m.CreatedDate)
+                .TakeLast(messageLimit)
                 .ToListAsync();
         }
 
@@ -23,8 +26,9 @@ namespace DevChat.Data.Repository
         {
             return await Db.ChatRooms.AsNoTracking()
                 .Where(c => c.Id == chatRoom.Id)
-                .Include(c => c.Users)
-                .SelectMany(c => c.Users)
+                .Include(c => c.Participants)
+                .ThenInclude(row => row.User)
+                .SelectMany(c => c.Participants.Where(p => p.ChatRoomId == chatRoom.Id).Select(p => p.User))
                 .ToListAsync();
         }
 

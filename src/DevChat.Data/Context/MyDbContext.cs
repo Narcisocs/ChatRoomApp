@@ -10,9 +10,12 @@ namespace DevChat.Data.Context
         public DbSet<ChatRoom> ChatRooms { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<Participant> Participants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Participant>().HasKey(p => new { p.ChatRoomId, p.UserId });
+
             foreach (var property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetProperties()
                     .Where(p => p.ClrType == typeof(string))))

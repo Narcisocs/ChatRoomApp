@@ -18,7 +18,7 @@ namespace DevChat.Data.Mappings
                 .IsRequired()
                 .HasColumnType("DateTime");
 
-            builder.ToTable("ChatMessages");
+            builder.ToTable("ChatMessage");
         }
     }
 }

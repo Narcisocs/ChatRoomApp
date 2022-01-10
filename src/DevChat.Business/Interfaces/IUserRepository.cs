@@ -2,7 +2,7 @@
 
 namespace DevChat.Business.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<User>
     {
         Task Join(ChatRoom chatRoom, User user);
         Task Leave(ChatRoom chatRoom, User user);

@@ -12,7 +12,7 @@ namespace DevChat.Data.Mappings
 
             builder.Property(p => p.Name)
                 .IsRequired()
-                .HasColumnType("varchar(250)");
+                .HasColumnType("varchar(500)");
 
             builder.Property(p => p.CreatedDate)
                 .IsRequired()
