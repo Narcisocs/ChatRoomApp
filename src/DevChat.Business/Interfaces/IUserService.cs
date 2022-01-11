@@ -2,7 +2,7 @@
 
 namespace DevChat.Business.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public  interface IUserService : IBaseService<User>, IDisposable
     {
         Task<bool> Login(User user);
         Task<User> FindByEmail(string email);

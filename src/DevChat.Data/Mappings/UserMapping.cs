@@ -22,6 +22,10 @@ namespace DevChat.Data.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(50)");
 
+            builder.Property(p => p.Password)
+                .IsRequired()
+                .HasColumnType("varchar(50)");
+
             builder.Property(p => p.CreatedDate)
                 .IsRequired()
                 .HasColumnType("DateTime");

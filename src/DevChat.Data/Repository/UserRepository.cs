@@ -9,6 +9,17 @@ namespace DevChat.Data.Repository
     {
         public UserRepository(MyDbContext context) : base(context) { }
 
+        public async Task<bool> Login(User user)
+        {
+            var userDB = await Db.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == user.Password);
+            return userDB != null;
+        }
+
+        public async Task<User> FindByEmail(string email)
+        {
+            return await Db.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task Join(ChatRoom chatRoom, User user)
         {
             var users = await ListParticipantsOf(chatRoom);

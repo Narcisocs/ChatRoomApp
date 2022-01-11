@@ -9,7 +9,6 @@
     <title>ChatRoom App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SampleChat.styles.css" asp-append-version="true" />
 </head>
 <body>
 
@@ -51,7 +50,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             <div class="text-center">
-                <h1 class="display-4">Welcome to the Chat Room App</h1>
+                <h1 class="display-4">Welcome to the Chat Room App<p>@ViewBag.User.Name</p></h1>
             </div>
             @{
                 if(Model.ChatRooms.Count > 0)
@@ -59,7 +58,16 @@
                     <ul>
                     @foreach(var chatRoom in Model.ChatRooms)
                     {
-                        <li>@chatRoom.Name - @Html.ActionLink("Enter in Room", "EnterRoom", "Chat", new { roomId = @chatRoom.Id })</li>                            
+                        <li>
+                        @chatRoom.Name - 
+
+                        @using (Html.BeginForm("EnterRoom", "Chat", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken();
+                           <input type="hidden" name="roomID" value="@chatRoom.Id "/>
+                           <button type="submit" class="btn btn-primary">Enter Room @chatRoom.Name</button>
+                        }
+                        </li>
                     }
                     </ul>
 
@@ -80,23 +88,8 @@
             }
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - SampleChat - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        $(document).ready(function () {
-
-            $("#loadChat").click(function () {
-                $("#chatDiv").load("/Chat/GetPartial");
-            });
-
-        });
-    </script>
 </body>
 </html>

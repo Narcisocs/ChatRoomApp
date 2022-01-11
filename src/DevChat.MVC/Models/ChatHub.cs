@@ -15,7 +15,7 @@ namespace DevChat.MVC.Models
 
         public async Task Send(string chatroom, string user, string message)
         {
-            var chatRoomDB = await _chatRoomService.GetById(Convert.ToInt32(chatroom.Replace("room", "")));
+            var chatRoomDB = await _chatRoomService.GetById(Convert.ToInt64(chatroom.Replace("room", "")));
 
             await Clients.All.SendAsync(chatroom, user, message);
         }

@@ -1,0 +1,99 @@
+﻿@using DevChat.MVC.Models
+@model ChatModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatRoom App</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style type="text/css">
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ChatRoomApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="text-center">
+            <h1 class="display-4">Welcome to the Chat Room App. <p>Please Login or SignUp</p> </h1>
+            <br />
+            <div id="loginDiv">
+                <h1>Login or <a href="javascript:void(0)" id="signup">SignUp</a></h1>
+                <br />
+                @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                }
+            </div>
+            <div id="signupDiv" class="hide">
+                <h1>SignUp or <a href="javascript:void(0)" id="login">Login</a></h1>
+                <br />
+                @using (Html.BeginForm("SignUp", "Auth", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    <div class="form-group">
+                        <label for="email">Name</label>
+                        <input class="form-control" name="name" placeholder="Enter Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" name="email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input class="form-control" name="phone" placeholder="Enter phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">SignUp</button>
+                }
+            </div>
+        </div>
+        
+    </main>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function (){
+        $("#signup").click(function(){
+           $("#loginDiv").addClass("hide");
+           $("#signupDiv").removeClass("hide");
+        });
+
+        $("#login").click(function(){
+           $("#signupDiv").addClass("hide");
+           $("#loginDiv").removeClass("hide");
+        });
+    });
+</script>
+</body>
+</html>
