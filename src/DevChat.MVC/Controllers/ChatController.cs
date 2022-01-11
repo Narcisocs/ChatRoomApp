@@ -1,6 +1,7 @@
 ﻿using DevChat.Business.Interfaces;
 using DevChat.Business.Models;
 using DevChat.MVC.Models;
+using DevChat.MVC.Models.DTOS;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevChat.MVC.Controllers
@@ -34,9 +35,9 @@ namespace DevChat.MVC.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> CreateRoom(string chatRoomName)
+        public async Task<IActionResult> CreateRoom([Bind(include: CreateRoomDTO.BindProperties)] CreateRoomDTO room)
         {
-            await _chatRoomService.CreateRoom(chatRoomName);
+            await _chatRoomService.CreateRoom(room.ChatRoomName);
 
             ViewBag.User = await GetLoggedUser();
 
@@ -47,9 +48,9 @@ namespace DevChat.MVC.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> EnterRoom(long roomId)
+        public async Task<IActionResult> EnterRoom([Bind(include: EnterRoomDTO.BindProperties)] EnterRoomDTO room)
         {
-            var chatRoom = await _chatRoomService.GetById(roomId);
+            var chatRoom = await _chatRoomService.GetById(room.RoomId);
 
             var user = await GetLoggedUser();
 
