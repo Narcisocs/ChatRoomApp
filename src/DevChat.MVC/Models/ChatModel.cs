@@ -5,5 +5,6 @@ namespace DevChat.MVC.Models
     public class ChatModel
     {
         public List<ChatRoom> ChatRooms { get; set; }
+        public User User { get; set; }
     }
 }

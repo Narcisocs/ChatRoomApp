@@ -12,30 +12,6 @@
 </head>
 <body>
 
-    @if(TempData["message"] != null)
-    {
-        <div id="infoValidationSummary" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title"><b>Message</b></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-horizontal">
-                            @TempData["message"]
-                        </div>
-                    </div>
-                    <div class="modal-footer center-block">
-                        <button type="button" class="btn btn-primary btn-sm text-center" data-dismiss="modal">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -64,8 +40,21 @@
                         @using (Html.BeginForm("EnterRoom", "Chat", FormMethod.Post))
                         {
                             @Html.AntiForgeryToken();
-                           <input type="hidden" name="roomID" value="@chatRoom.Id "/>
-                           <button type="submit" class="btn btn-primary">Enter Room @chatRoom.Name</button>
+                            <input type="hidden" name="roomID" value="@chatRoom.Id "/>
+                            <button type="submit" class="btn btn-primary">Enter Room @chatRoom.Name</button>
+                        }
+
+                        - 
+
+                        @if(@chatRoom.Participants.Any(p => p.UserId == @ViewBag.User.Id))
+                        {
+                            @using (Html.BeginForm("LeaveRoom", "Chat", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken();
+                               <input type="hidden" name="roomID" value="@chatRoom.Id "/>
+                               <button type="submit" class="btn btn-danger">Leave Room @chatRoom.Name</button>
+                            }
+
                         }
                         </li>
                     }
@@ -74,7 +63,7 @@
                     <div class="text-center">
                         <br />
                         <br />
-                        <h2>Would you like to create @Html.ActionLink("one", "CreateRoom", "Chat") ?</h2>
+                        <h2>Would you like to create @Html.ActionLink("one Room", "CreateRoom", "Chat") ?</h2>
                     </div>
                 }
                 else
@@ -82,7 +71,7 @@
                     <div class="text-center">
                         <br />
                         <br />
-                        <h2>No rooms created so far. <p>Would you like to create @Html.ActionLink("one", "CreateRoom", "Chat") ?</p></h2>
+                        <h2>No rooms created so far. <p>Would you like to create @Html.ActionLink("one Room", "CreateRoom", "Chat") ?</p></h2>
                     </div>
                 }
             }

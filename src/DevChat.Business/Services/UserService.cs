@@ -36,7 +36,7 @@ namespace DevChat.Business.Services
             return await _userRepository.ListMessagesOf(chatRoom, user);
         }
 
-        public async Task<IEnumerable<User>> ListParticipantsOf(ChatRoom chatRoom)
+        public async Task<IEnumerable<Participant>> ListParticipantsOf(ChatRoom chatRoom)
         {
             return await _userRepository.ListParticipantsOf(chatRoom);
         }

@@ -8,7 +8,7 @@ namespace DevChat.Business.Interfaces
         Task Add(ChatRoom chatRoom, User user);
         Task Remove(ChatRoom chatRoom, User user);
         Task<IEnumerable<User>> ListParticipants(ChatRoom chatRoom);
-        Task Add(ChatRoom chatRoom, ChatMessage message);
+        Task Add(ChatMessage message);
         Task<IEnumerable<ChatMessage>> ListMessages(ChatRoom chatRoom);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DevChat.Business.Models
+﻿using System.Text.Json.Serialization;
+
+namespace DevChat.Business.Models
 {
     public class User : Entity
     {
@@ -8,7 +10,9 @@
         public string Password { get; set; }
 
         /* EF Relations */
+        [JsonIgnore]
         public IEnumerable<ChatMessage> chatMessages { get; set; }
+        [JsonIgnore]
         public ICollection<Participant> Participants { get; set; }
     }
 }

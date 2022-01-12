@@ -9,7 +9,7 @@ namespace DevChat.Business.Interfaces
         Task Join(ChatRoom chatRoom, User user);
         Task Leave(ChatRoom chatRoom, User user);
         Task SendMessageTo(ChatRoom chatRoom, string message);
-        Task<IEnumerable<User>> ListParticipantsOf(ChatRoom chatRoom);
+        Task<IEnumerable<Participant>> ListParticipantsOf(ChatRoom chatRoom);
         Task<IEnumerable<ChatMessage>> ListMessagesOf(ChatRoom chatRoom, User user);
     }
 }

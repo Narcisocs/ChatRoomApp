@@ -22,12 +22,12 @@ namespace DevChat.Data.Repository
         {
             int messageLimit = 50;
 
-            return await Db.ChatRooms.AsNoTracking()
-                .Where(c => c.Id == chatRoom.Id)
-                .Include(c => c.ChatMessages)
-                .SelectMany(c => c.ChatMessages)
+            return await Db.ChatMessages.AsNoTracking()
+                .Where(c => c.ChatRoom.Id == chatRoom.Id)
+                .Include(c => c.User)
+                .OrderByDescending(m => m.CreatedDate)
+                .Take(messageLimit)
                 .OrderBy(m => m.CreatedDate)
-                .TakeLast(messageLimit)
                 .ToListAsync();
         }
 
@@ -59,11 +59,9 @@ namespace DevChat.Data.Repository
             await SaveChanges();
         }
 
-        public async Task Add(ChatRoom chatRoom, ChatMessage message)
+        public async Task Add(ChatMessage message)
         {
-            var messages = await ListMessages(chatRoom);
-
-            messages.ToList().Add(message);
+            Db.ChatMessages.Add(message);
 
             await SaveChanges();
         }

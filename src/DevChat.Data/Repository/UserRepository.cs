@@ -22,18 +22,18 @@ namespace DevChat.Data.Repository
 
         public async Task Join(ChatRoom chatRoom, User user)
         {
-            var users = await ListParticipantsOf(chatRoom);
+            var newParticipant = new Participant() { ChatRoom = chatRoom, User = user };
 
-            users.ToList().Add(user);
+            Db.Participants.Add(newParticipant);
 
             await SaveChanges();
         }
 
         public async Task Leave(ChatRoom chatRoom, User user)
         {
-            var users = await ListParticipantsOf(chatRoom);
+            var oldParticipant = new Participant() { ChatRoom = chatRoom, User = user };
 
-            users.ToList().Add(user);
+            Db.Participants.Remove(oldParticipant);
 
             await SaveChanges();
         }
@@ -46,10 +46,12 @@ namespace DevChat.Data.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<User>> ListParticipantsOf(ChatRoom chatRoom)
+        public async Task<IEnumerable<Participant>> ListParticipantsOf(ChatRoom chatRoom)
         {
             return await Db.Users.AsNoTracking()
                 .Where(u => u.Participants.Any(p => p.ChatRoomId == chatRoom.Id))
+                .Include(u => u.Participants)
+                .SelectMany(u => u.Participants)
                 .ToListAsync();
         }
 

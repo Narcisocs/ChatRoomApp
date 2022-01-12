@@ -21,7 +21,9 @@ namespace DevChat.MVC.Controllers
         {
             var model = await GetAllChatRooms();
 
-            ViewBag.User = await GetLoggedUser();
+            var user = await GetLoggedUser();
+
+            ViewBag.User = user;
 
             return View(model);
         }
@@ -52,16 +54,42 @@ namespace DevChat.MVC.Controllers
         {
             var chatRoom = await _chatRoomService.GetById(room.RoomId);
 
+            var chatMessages = await _chatRoomService.ListMessages(chatRoom);
+            ViewBag.Messages = chatMessages;
+
+            var usersInRoom = await _chatRoomService.ListParticipants(chatRoom);
+
+            var user = await GetLoggedUser();
+            ViewBag.User = user;
+
+            if (!usersInRoom.Any(u => u.Id == user.Id))
+                await _userService.Join(chatRoom, user);
+
+            return View("ChatRoom", new ChatModel() { ChatRooms = new List<ChatRoom>() { chatRoom }, User = user });
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> LeaveRoom([Bind(include: EnterRoomDTO.BindProperties)] EnterRoomDTO room)
+        {
+            var chatRoom = await _chatRoomService.GetById(room.RoomId);
+
             var user = await GetLoggedUser();
 
-            await _userService.Join(chatRoom, user);
+            await _userService.Leave(chatRoom, user);
 
-            return View("chat", new ChatModel() { ChatRooms = new List<Business.Models.ChatRoom>() { chatRoom } });
+            return RedirectToAction("Index");
         }
 
         private async Task<ChatModel> GetAllChatRooms()
         {
             var chatRooms = await _chatRoomService.GetAll();
+
+            chatRooms.ForEach(async chatRoom => {
+                var participants = await _userService.ListParticipantsOf(chatRoom);
+                chatRoom.Participants = participants.ToList();
+            });
+
             var model = new ChatModel() { ChatRooms = chatRooms };
 
             return model;

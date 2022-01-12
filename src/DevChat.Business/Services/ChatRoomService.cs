@@ -17,9 +17,9 @@ namespace DevChat.Business.Services
             await _chatRoomRepository.Add(chatRoom, user);
         }
 
-        public async Task Add(ChatRoom chatRoom, ChatMessage message)
+        public async Task Add(ChatMessage message)
         {
-            await _chatRoomRepository.Add(chatRoom, message);
+            await _chatRoomRepository.Add(message);
         }
 
         public async Task CreateRoom(string chatRoomName)
