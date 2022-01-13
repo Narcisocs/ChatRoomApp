@@ -21,9 +21,12 @@ namespace DevChat.MVC.Controllers
         {
             var model = await GetAllChatRooms();
 
-            var user = await GetLoggedUser();
+            if(HttpContext.Session.GetString("userID") != null)
+            {
+                var user = await GetLoggedUser();
 
-            ViewBag.User = user;
+                ViewBag.User = user;
+            }
 
             return View(model);
         }
@@ -85,10 +88,11 @@ namespace DevChat.MVC.Controllers
         {
             var chatRooms = await _chatRoomService.GetAll();
 
-            chatRooms.ForEach(async chatRoom => {
+            foreach (var chatRoom in chatRooms)
+            {
                 var participants = await _userService.ListParticipantsOf(chatRoom);
                 chatRoom.Participants = participants.ToList();
-            });
+            }
 
             var model = new ChatModel() { ChatRooms = chatRooms };
 

@@ -46,7 +46,7 @@
 
                         - 
 
-                        @if(@chatRoom.Participants.Any(p => p.UserId == @ViewBag.User.Id))
+                        @if(@chatRoom.Participants != null && @chatRoom.Participants.Any(p => p.UserId == @ViewBag.User.Id))
                         {
                             @using (Html.BeginForm("LeaveRoom", "Chat", FormMethod.Post))
                             {
